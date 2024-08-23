@@ -55,17 +55,24 @@ public class ContaBancaria {
         
     }
 
+    public double validator_saldo(double saldo_atual, double saida) throws SaldoInvalidoException {
+        if ((saldo_atual - saida) < 0) {
+            throw new SaldoInvalidoException("Saldo inválido! O saldo não pode ser negativo.");
+        }
+        return (saldo_atual - saida);
+    }
+
     /**
      * Método que realiza um saque na conta bancária
      * 
      * @param valor: double que representa o valor a ser sacado
      */
     public void sacar(double valor) {
-        if(this.saldo - valor < 0){
-            System.out.println("Saldo insuficiente!");
-        }else{
-            this.saldo -= valor;
+        try{
+            this.saldo = validator_saldo(this.saldo, valor);
             System.out.println("Saque realizado com sucesso! Novo saldo: " + this.saldo);
+        }catch(SaldoInvalidoException e){
+            System.err.println(e.getMessage());
         }
     }
 

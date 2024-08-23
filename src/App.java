@@ -29,13 +29,15 @@ public class App {
                     System.out.println("Digite o nome do titular: ");
                     var nome_titular = scanner.next();
                     System.out.println("Digite o CPF do titular: ");
-                    var cpf_titular = scanner.next();
+                    var cpf_titular = formatarCPF(scanner.next());
                     System.out.println("Digite o saldo inicial: ");
                     var saldo = scanner.nextDouble();
                     conta.criar_conta(numero_conta, nome_titular, cpf_titular, saldo);
                 } catch (InputMismatchException e) {
                     System.err.println("Erro ao criar conta! Verifique os dados informados.");
                     scanner.nextLine(); // Limpa o buffer do scanner
+                } catch (CpfInvalidoException e) {
+                    System.err.println(e.getMessage());
                 }
                 break;
                 case 2:
@@ -73,5 +75,13 @@ public class App {
 
          }while(opcao != 4);
          scanner.close();
+    }
+
+
+    public static String formatarCPF(String cpf) throws CpfInvalidoException {
+        if (cpf.length() != 11) {
+            throw new CpfInvalidoException("CPF inválido! O CPF deve conter 11 dígitos.");
+        }
+        return cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6, 9) + "-" + cpf.substring(9, 11);
     }
 }
