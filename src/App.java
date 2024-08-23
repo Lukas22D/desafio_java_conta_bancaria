@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class App {
@@ -22,6 +23,7 @@ public class App {
              opcao = scanner.nextInt();
             switch(opcao){
                 case 1:
+                try {
                     System.out.println("Digite o número da conta: ");
                     var numero_conta = scanner.next();
                     System.out.println("Digite o nome do titular: ");
@@ -31,10 +33,14 @@ public class App {
                     System.out.println("Digite o saldo inicial: ");
                     var saldo = scanner.nextDouble();
                     conta.criar_conta(numero_conta, nome_titular, cpf_titular, saldo);
-                  
-                    break;
+                } catch (InputMismatchException e) {
+                    System.err.println("Erro ao criar conta! Verifique os dados informados.");
+                    scanner.nextLine(); // Limpa o buffer do scanner
+                }
+                break;
                 case 2:
                     if(conta.cpf_titular == null){
+
                         System.out.println("Conta não criada!");
                         break;
                     }else{
